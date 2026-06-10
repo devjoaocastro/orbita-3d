@@ -14,8 +14,7 @@ import {
   useScroll,
 } from '@react-three/drei'
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
-import { easing } from 'maath'
-import * as random from 'maath/random'
+import { easing, inSphere } from '../lib/easing'
 import { PAGES, setScrollEl } from '../scrollBus'
 
 /* ------------------------------------------------------------------ */
@@ -306,10 +305,7 @@ function WorkCard({
 
 function Galaxy({ count = 2400 }: { count?: number }) {
   const points = useRef<THREE.Points>(null!)
-  const positions = useMemo(
-    () => random.inSphere(new Float32Array(count * 3), { radius: 3.4 }) as Float32Array,
-    [count],
-  )
+  const positions = useMemo(() => inSphere(new Float32Array(count * 3), 3.4), [count])
 
   useFrame((_, delta) => {
     points.current.rotation.y += delta * 0.06
